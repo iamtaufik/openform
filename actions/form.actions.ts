@@ -92,7 +92,41 @@ export const createForm = async (formDto: CreateFormDTO) => {
       throw new Error('Validation error on create form');
     }
 
+    // const result = await prisma.$transaction(async (prisma) => {
+    //   const createdForm = await prisma.form.create({
+    //     data: {
+    //       title: formDto.title,
+    //       slug: formDto.title.toLowerCase().replace(/ /g, '-') + '-' + generateUniqueString(5),
+    //       publisher: user?.emailAddresses[0].emailAddress,
+    //     },
+    //   });
+
+    //   for (const question of formDto.questions) {
+    //     const createdQuestion = await prisma.question.create({
+    //       data: {
+    //         text: question.text,
+    //         type: question.type,
+    //         formId: createdForm.id,
+    //       },
+    //     });
+
+    //     if (question.options && question.options.length > 0) {
+    //       for (const option of question.options) {
+    //         await prisma.option.create({
+    //           data: {
+    //             text: option.text,
+    //             questionId: createdQuestion.id,
+    //           },
+    //         });
+    //       }
+    //     }
+    //   }
+
+    //   return createdForm;
+    // });
+
     const result = await prisma.$transaction(async (prisma) => {
+      // Create the form
       const createdForm = await prisma.form.create({
         data: {
           title: formDto.title,
@@ -101,26 +135,33 @@ export const createForm = async (formDto: CreateFormDTO) => {
         },
       });
 
-      for (const question of formDto.questions) {
-        const createdQuestion = await prisma.question.create({
-          data: {
-            text: question.text,
-            type: question.type,
-            formId: createdForm.id,
-          },
-        });
+      // First, create all questions
+      const createdQuestions = await Promise.all(
+        formDto.questions.map((question) =>
+          prisma.question.create({
+            data: {
+              text: question.text,
+              type: question.type,
+              formId: createdForm.id,
+            },
+          })
+        )
+      );
 
-        if (question.options && question.options.length > 0) {
-          for (const option of question.options) {
-            await prisma.option.create({
+      // Then, create options for each question
+      const optionPromises = formDto.questions.flatMap(
+        (question, index) =>
+          question.options?.map((option) =>
+            prisma.option.create({
               data: {
                 text: option.text,
-                questionId: createdQuestion.id,
+                questionId: createdQuestions[index].id,
               },
-            });
-          }
-        }
-      }
+            })
+          ) || []
+      );
+
+      await Promise.all(optionPromises);
 
       return createdForm;
     });
