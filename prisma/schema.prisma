@@ -1,0 +1,68 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Form {
+  id                  String      @id @default(auto()) @map("_id") @db.ObjectId
+  slug                String      @unique
+  title               String
+  publisher           String
+  questions           Question[]
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@map("forms")
+}
+
+model Question {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  form      Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId    String      @db.ObjectId
+  type      QuestionType
+  options   Option[]
+  answers   Answer[]
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("questions")
+}
+
+model Option {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  question   Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String     @db.ObjectId
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@map("options")
+}
+
+model Answer {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  participant String
+  formId      String
+  question    Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId  String     @db.ObjectId
+  text        String
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@map("answers")
+}
+
+enum QuestionType {
+  TEXT
+  MULTIPLE_CHOICE
+  SINGLE_CHOICE
+}
