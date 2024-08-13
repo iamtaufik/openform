@@ -26,7 +26,7 @@ const Page = async ({ params: { slug } }: SearchParamProps) => {
 
   const isSubmited = await checkIsSubmitted({ formId: form?.id });
 
-  if (!user) redirect('/sign-in');
+  if (!user) redirect(`/sign-in?redirectTo=/${slug}`);
 
   if (isSubmited) redirect(`/${slug}/submited`);
 
