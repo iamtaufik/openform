@@ -6,8 +6,20 @@ import React from 'react';
 import { BarChartHero } from './_bar-chart';
 import { AreaChartHero } from './_area-chart';
 import { getForms, getTopFormAnswers } from '@/actions/form.actions';
+import { headers } from 'next/headers';
+import { toast } from 'react-toastify';
+import MobileWarningAlret from './_warning-device';
 
 export const dynamic = 'force-dynamic';
+
+const getDeviceType = async () => {
+  const userAgent = await headers().get('User-Agent');
+  if (userAgent) {
+    return /Mobi|Android/i.test(userAgent);
+  } else {
+    return false;
+  }
+};
 
 const Page = async () => {
   const questions = await getQuestions();
@@ -15,9 +27,11 @@ const Page = async () => {
   const answers = await getAnswers();
   const topFormAnswers = await getTopFormAnswers();
   const monthlyAnswers = await getMonthlyAnswers();
+  const isMobile = await getDeviceType();
 
   return (
     <div className="flex flex-col flex-1 flex-wrap min-h-screen pb-10">
+      <MobileWarningAlret isMobile={isMobile} />
       <Header title="Dashboard" navItems={['Login', 'Dashboard']} />
       <div className="w-full h-full space-y-12">
         <div className=" flex justify-between flex-col space-y-4 lg:space-y-0 lg:flex-row">
