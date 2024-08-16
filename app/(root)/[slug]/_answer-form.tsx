@@ -210,7 +210,7 @@ const AnswerForm = ({ form }: { form: FormWithQuestions }) => {
               Next
             </Button>
           ) : (
-            <Button onClick={handleSubmit} disabled={isLoading} variant="success">
+            <Button onClick={handleSubmit} disabled={isLoading} className='group' variant="success">
               {isLoading ? <Spin /> : 'Submit'}
             </Button>
           )}

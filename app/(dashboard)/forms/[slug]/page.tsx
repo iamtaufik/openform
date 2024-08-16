@@ -38,6 +38,16 @@ const Page = async ({ params: { slug } }: SearchParamProps) => {
                   </tr>
                 </thead>
                 <tbody>
+                  {
+                    answers.length === 0 && (
+                      <tr>
+                        <td colSpan={5} className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 text-center">
+                          No answers found
+                        </td>
+                      </tr>
+                    )
+                  }
+
                   {answers &&
                     answers.map((answer) => (
                       <tr key={answer.id} className="odd:bg-white even:bg-gray-100">

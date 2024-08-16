@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const NotFound = async () => {
   return (
-    <main className="min-h-screen bg-[#1B202A] text-white flex justify-center items-center px-10 lg:px-32">
+    <main className="min-h-[100dvh] bg-[#1B202A] text-white flex justify-center items-center px-10 lg:px-32">
       <div className="space-y-10 flex justify-center flex-col items-center">
         <Image src={'./reading.svg'} alt="Ice cream" width={400} height={400} />
         <div className="flex flex-col items-center">

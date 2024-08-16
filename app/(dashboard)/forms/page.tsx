@@ -37,6 +37,16 @@ const Page = async () => {
                     </tr>
                   </thead>
                   <tbody>
+                    {
+                      forms.length === 0 && (
+                        <tr>
+                          <td colSpan={3} className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 text-center">
+                            No forms found
+                          </td>
+                        </tr>
+                      )
+                    }
+
                     {forms &&
                       forms.map((form) => (
                         <tr key={form.id} className="odd:bg-white even:bg-gray-100">

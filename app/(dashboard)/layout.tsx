@@ -4,7 +4,7 @@ import { Fredoka } from 'next/font/google';
 
 const fredoka = Fredoka({ subsets: ['latin'], weight: '400' });
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
     <main className={`${fredoka.className} flex min-h-screen bg-[#FBF4EF] font-sans flex-row`}>
       <SideBar />

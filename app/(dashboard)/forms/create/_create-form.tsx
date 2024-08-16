@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { ZodError } from 'zod';
 import { toast } from 'react-toastify';
+import Spin from '@/components/Spin';
 
 const variants = {
   enter: (direction: number) => ({
@@ -29,6 +30,7 @@ const CreateForm = () => {
   });
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const handleNext = () => {
@@ -53,15 +55,25 @@ const CreateForm = () => {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
     try {
       const filteredQuestions = form.questions.filter((question) => question.text.trim() !== '');
       const formToSubmit = { ...form, questions: filteredQuestions };
 
       await createFormDTO.parseAsync(formToSubmit);
 
-      const formResponse = await createForm(formToSubmit);
-      console.log('Form created:', formResponse);
+      await createForm(formToSubmit);
       router.push('/forms');
+      toast.success('Form created successfully', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
     } catch (error) {
       if (error instanceof ZodError) {
         for (const issue of error.errors) {
@@ -78,6 +90,8 @@ const CreateForm = () => {
         }
       }
       console.log(`Error creating form: ${error}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -178,8 +192,8 @@ const CreateForm = () => {
               Next
             </button>
           ) : (
-            <button onClick={handleSubmit} className="bg-green-500 text-white rounded px-4 py-2 border-l-2 border-t-2 border-r-4 border-b-4 border-black">
-              Submit
+            <button onClick={handleSubmit} disabled={isLoading} className=" bg-green-500 text-white rounded px-4 py-2 border-l-2 border-t-2 border-r-4 border-b-4 border-black">
+              {isLoading ? <Spin /> : 'Submit'}
             </button>
           )}
         </div>

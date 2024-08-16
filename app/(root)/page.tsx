@@ -138,19 +138,23 @@ export default async function Home() {
       </div>
       <div id="testimonial" className="py-10 space-y-10 ">
         <h1 className="text-center text-4xl font-semibold">Testimonial</h1>
-        <div>
-          <div className="w-full max-w-sm border-4 border-black  space-y-4 scale-100 p-4 text-base font-semibold rounded-lg text-black bg-[#A9C0FB] shadow-[3px_3px_0_#FACC15]  transition-all ease-in-out duration-300 hover:scale-[0.98] hover:text-[#FFF8E4] hover:bg-[#1B202A] hover:border-[#1B202A]">
-            <div className="flex space-x-4">
-              <Image src={testimonial[0].avatar} className="rounded-full " alt={testimonial[0].name} width={60} height={60} />
+        <div className='flex flex-wrap justify-between gap-6'>
+          {
+            testimonial.map((item, index) => (
+            <div key={index} className="w-full max-w-sm border-4 border-black  space-y-4 scale-100 p-4 text-base font-semibold rounded-lg text-black bg-[#A9C0FB] shadow-[3px_3px_0_#FACC15]  transition-all ease-in-out duration-300 hover:scale-[0.98] hover:text-[#FFF8E4] hover:bg-[#1B202A] hover:border-[#1B202A]">
+              <div className="flex space-x-4">
+                <Image src={item.avatar} className="rounded-full " alt={item.name} width={60} height={60} />
+                <div>
+                  <h2 className="text-lg font-semibold">{item.name}</h2>
+                  <p className="text-sm font-normal">{item.email}</p>
+                </div>
+              </div>
               <div>
-                <h2 className="text-lg font-semibold">{testimonial[0].name}</h2>
-                <p className="text-sm font-normal">{testimonial[0].email}</p>
+                <p className="text-base">{item.description}</p>
               </div>
             </div>
-            <div>
-              <p className="text-base">{testimonial[0].description}</p>
-            </div>
-          </div>
+            ))
+          }
         </div>
       </div>
     </main>
