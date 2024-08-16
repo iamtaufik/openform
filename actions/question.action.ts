@@ -6,10 +6,14 @@ export const getQuestions = async () => {
   try {
     const user = await currentUser();
 
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     const questions = await prisma.question.findMany({
       where: {
         form: {
-          publisher: user?.emailAddresses[0].emailAddress,
+          publisher: user.emailAddresses[0].emailAddress,
         },
       },
     });

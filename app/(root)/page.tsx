@@ -75,7 +75,7 @@ export default async function Home() {
             </li>
             <li>Testimonial</li>
           </ul>
-          <div className="space-x-6 hidden lg:block">
+          <div className="space-x-6">
             {user ? (
               <Link
                 href="/dashboard"

@@ -4,15 +4,18 @@ import { generateUniqueString } from '@/libs/utils';
 import { type CreateFormDTO, createFormDTO } from '@/validations/form.validations';
 import { currentUser } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
-import { ZodError } from 'zod';
 
 export const getForms = async () => {
   try {
     const user = await currentUser();
 
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     const forms = await prisma.form.findMany({
       where: {
-        publisher: user?.emailAddresses[0].emailAddress,
+        publisher: user.emailAddresses[0].emailAddress,
       },
       include: {
         questions: {
@@ -31,6 +34,12 @@ export const getForms = async () => {
 
 export const getForm = async (slug: string) => {
   try {
+    const user = await currentUser();
+
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     const form = await prisma.form.findUnique({
       where: { slug },
       include: {
@@ -51,6 +60,10 @@ export const getForm = async (slug: string) => {
 export const getTopFormAnswers = async () => {
   try {
     const user = await currentUser();
+
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
 
     const topForms = await prisma.form.findMany({
       where: {
@@ -83,7 +96,7 @@ export const createForm = async (formDto: CreateFormDTO) => {
     const user = await currentUser();
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Unauthorized');
     }
 
     const validate = await createFormDTO.parseAsync(formDto);
@@ -144,6 +157,12 @@ export const createForm = async (formDto: CreateFormDTO) => {
 
 export const countTotalAnswers = async (formId: string) => {
   try {
+    const user = await currentUser();
+
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     const uniqueAnswers = await prisma.answer.groupBy({
       by: ['participant', 'questionId'],
       where: {
@@ -167,6 +186,12 @@ export const countTotalAnswers = async (formId: string) => {
 
 export const deleteForm = async (id: string) => {
   try {
+    const user = await currentUser();
+
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     await prisma.form.delete({
       where: { id },
     });

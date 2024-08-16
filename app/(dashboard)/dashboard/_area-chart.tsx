@@ -11,6 +11,13 @@ interface AreaChartHeroProps {
 }
 
 export function AreaChartHero({ chartData }: AreaChartHeroProps) {
+  useEffect(() => {
+    AOS.init({
+      duration: 600,
+      once: false,
+    });
+  }, []);
+
   if (!chartData) {
     return null;
   }
@@ -20,12 +27,6 @@ export function AreaChartHero({ chartData }: AreaChartHeroProps) {
     count: answer.count,
   }));
 
-  useEffect(() => {
-    AOS.init({
-      duration: 600,
-      once: false,
-    });
-  }, []);
   return (
     <div data-aos={'fade-up'} className="w-full max-w-sm lg:max-w-3xl border-l-2 border-t-2 border-r-4 border-b-4 border-black rounded-lg overflow-hidden">
       <AreaChart

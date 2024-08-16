@@ -10,6 +10,10 @@ export const getAnswers = async () => {
   try {
     const user = await currentUser();
 
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     const answers = await prisma.answer.findMany({
       where: {
         question: {
@@ -29,6 +33,10 @@ export const getAnswers = async () => {
 export const getMonthlyAnswers = async () => {
   try {
     const user = await currentUser();
+
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
 
     const answers: { id: string; createdAt: Date }[] = await prisma.answer.findMany({
       where: {
@@ -74,7 +82,7 @@ const create = async ({ formId, answers }: CreateAnswerDTO) => {
     const user = await currentUser();
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Unauthorized');
     }
 
     // const validate = await createFormDTO.parseAsync({ formId, answers });
@@ -151,7 +159,7 @@ export const checkIsSubmitted = async ({ formId }: { formId: string }) => {
     const user = await currentUser();
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error('Unauthorized');
     }
 
     const answers = await prisma.answer.findFirst({
@@ -173,6 +181,12 @@ export const checkIsSubmitted = async ({ formId }: { formId: string }) => {
 
 export const getAnswer = async ({ slug }: { slug: string }) => {
   try {
+    const user = await currentUser();
+
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     const answers = await prisma.answer.findMany({
       where: {
         question: {
@@ -194,6 +208,12 @@ export const getAnswer = async ({ slug }: { slug: string }) => {
 
 export const deleteAnswer = async (id: string) => {
   try {
+    const user = await currentUser();
+
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
     await prisma.answer.delete({
       where: { id },
     });

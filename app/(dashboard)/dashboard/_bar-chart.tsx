@@ -10,16 +10,16 @@ interface BarChartHeroProps {
 }
 
 export const BarChartHero = ({ chartData }: BarChartHeroProps) => {
-  if (!chartData) {
-    return null;
-  }
-
   useEffect(() => {
     AOS.init({
       duration: 600,
       once: false,
     });
   });
+
+  if (!chartData) {
+    return null;
+  }
 
   return (
     <div data-aos={'fade-up'} className="w-full max-w-sm lg:max-w-lg  border-l-2 border-t-2 border-r-4 border-b-4 border-black rounded-lg overflow-hidden">

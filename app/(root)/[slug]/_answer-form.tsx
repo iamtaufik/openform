@@ -60,7 +60,7 @@ const AnswerForm = ({ form }: { form: FormWithQuestions }) => {
       localStorage.setItem(`answers-${form.slug}`, JSON.stringify(answers));
       localStorage.setItem(`currentQuestionIndex-${form.slug}`, currentQuestionIndex.toString());
     }
-  }, [answers, currentQuestionIndex, form.id]);
+  }, [answers, currentQuestionIndex, form.id, form.slug]);
 
   const handleChange = (questionId: string, value: string | string[]) => {
     setAnswers((prev) => ({
