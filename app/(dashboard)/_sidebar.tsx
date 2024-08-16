@@ -37,7 +37,7 @@ const SideBar = () => {
           <div className="flex py-1 md:py-3 pl-1 align-middle text-[#FFF8E4] no-underline hover:text-[#fca311]">
             <div>
               <SignedIn>
-                <UserButton />
+                <UserButton  afterSwitchSessionUrl='/'/>
               </SignedIn>
             </div>
           </div>

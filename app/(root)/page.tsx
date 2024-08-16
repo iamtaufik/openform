@@ -2,6 +2,7 @@ import { currentUser } from '@clerk/nextjs/server';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fredoka } from 'next/font/google';
+import Navbar from '@/components/Navbar';
 
 const fredoka = Fredoka({ subsets: ['latin'], weight: '400' });
 
@@ -62,46 +63,11 @@ const testimonial = [
 export default async function Home() {
   const user = await currentUser();
 
+  const isLogged = user !== null;
+
   return (
     <main className={`${fredoka.className} min-h-screen bg-[#1B202A] text-[#FFF8E4] px-10 lg:px-32`}>
-      <header className="flex justify-between h-10 py-10 items-center">
-        <nav className="flex justify-between w-full items-center">
-          <span className="text-3xl font-semibold">
-            open<span className="text-[#FFE479]">Form</span>
-          </span>
-          <ul className=" gap-10 hidden lg:flex">
-            <li>
-              <a href="#whyUs">Why us?</a>
-            </li>
-            <li>Testimonial</li>
-          </ul>
-          <div className="space-x-6">
-            {user ? (
-              <Link
-                href="/dashboard"
-                className="ml-auto border-4 border-black inline-flex items-center scale-100 px-4 py-2 text-base font-semibold rounded-lg text-black bg-[#FFE479] shadow-[3px_3px_0_#FACC15]  transition-all ease-in-out duration-300 hover:scale-[0.9] hover:text-[#FFF8E4] hover:bg-[#1B202A] hover:border-[#1B202A]"
-              >
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link
-                  href="/sign-in"
-                  className="ml-auto border-4 border-black inline-flex items-center scale-100 px-4 py-2 text-base font-semibold rounded-lg text-black bg-[#A9C0FB] shadow-[3px_3px_0_#FACC15]  transition-all ease-in-out duration-300 hover:scale-[0.9] hover:text-[#FFF8E4] hover:bg-[#1B202A] hover:border-[#1B202A]"
-                >
-                  Sign in
-                </Link>
-                <Link
-                  href="/sign-up"
-                  className="ml-auto border-4 border-black inline-flex items-center scale-100 px-4 py-2 text-base font-semibold rounded-lg text-black bg-[#FFE479] shadow-[3px_3px_0_#FACC15]  transition-all ease-in-out duration-300 hover:scale-[0.9] hover:text-[#FFF8E4] hover:bg-[#1B202A] hover:border-[#1B202A]"
-                >
-                  Sign up
-                </Link>
-              </>
-            )}
-          </div>
-        </nav>
-      </header>
+      <Navbar isLogged={isLogged} />
       <div className="flex items-center justify-between py-20 flex-col lg:flex-row">
         <div>
           <Image src={'./reading-side.svg'} alt="Reading side" width={600} height={600} />
@@ -138,10 +104,12 @@ export default async function Home() {
       </div>
       <div id="testimonial" className="py-10 space-y-10 ">
         <h1 className="text-center text-4xl font-semibold">Testimonial</h1>
-        <div className='flex flex-wrap justify-between gap-6'>
-          {
-            testimonial.map((item, index) => (
-            <div key={index} className="w-full max-w-sm border-4 border-black  space-y-4 scale-100 p-4 text-base font-semibold rounded-lg text-black bg-[#A9C0FB] shadow-[3px_3px_0_#FACC15]  transition-all ease-in-out duration-300 hover:scale-[0.98] hover:text-[#FFF8E4] hover:bg-[#1B202A] hover:border-[#1B202A]">
+        <div className="flex flex-wrap justify-between gap-6">
+          {testimonial.map((item, index) => (
+            <div
+              key={index}
+              className="w-full max-w-sm border-4 border-black  space-y-4 scale-100 p-4 text-base font-semibold rounded-lg text-black bg-[#A9C0FB] shadow-[3px_3px_0_#FACC15]  transition-all ease-in-out duration-300 hover:scale-[0.98] hover:text-[#FFF8E4] hover:bg-[#1B202A] hover:border-[#1B202A]"
+            >
               <div className="flex space-x-4">
                 <Image src={item.avatar} className="rounded-full " alt={item.name} width={60} height={60} />
                 <div>
@@ -153,8 +121,7 @@ export default async function Home() {
                 <p className="text-base">{item.description}</p>
               </div>
             </div>
-            ))
-          }
+          ))}
         </div>
       </div>
     </main>
