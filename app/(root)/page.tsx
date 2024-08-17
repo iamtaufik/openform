@@ -124,6 +124,14 @@ export default async function Home() {
           ))}
         </div>
       </div>
+      <footer className='py-10'>
+        <p className="text-center text-[#FFF8E4] text-base">
+          Created by{' '}
+          <a className='text-[#FFE479] font-semibold' href="https://www.linkedin.com/in/iamtaufik/" target="_blank">
+            Taufik
+          </a>
+        </p>
+      </footer>
     </main>
   );
 }
