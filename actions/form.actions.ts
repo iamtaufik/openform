@@ -34,12 +34,6 @@ export const getForms = async () => {
 
 export const getForm = async (slug: string) => {
   try {
-    const user = await currentUser();
-
-    if (!user) {
-      throw new Error('Unauthorized');
-    }
-
     const form = await prisma.form.findUnique({
       where: { slug },
       include: {

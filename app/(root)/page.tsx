@@ -66,7 +66,7 @@ export default async function Home() {
   const isLogged = user !== null;
 
   return (
-    <main className={`${fredoka.className} min-h-screen bg-[#1B202A] text-[#FFF8E4] px-10 lg:px-32`}>
+    <main className={`${fredoka.className} min-h-[100dvh] bg-[#1B202A] text-[#FFF8E4] px-10 lg:px-32`}>
       <Navbar isLogged={isLogged} />
       <div className="flex items-center justify-between py-20 flex-col lg:flex-row">
         <div>

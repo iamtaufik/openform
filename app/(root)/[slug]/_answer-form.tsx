@@ -133,7 +133,7 @@ const AnswerForm = ({ form }: { form: FormWithQuestions }) => {
   const questionLabel = `${currentQuestionIndex + 1}/${form.questions.length}`;
 
   return (
-    <div className={`${fredoka.className} min-h-screen flex items-center justify-center bg-[#1B202A]`}>
+    <div className={`${fredoka.className} min-h-[100dvh] px-4 flex items-center justify-center bg-[#1B202A]`}>
       <div className="w-full max-w-sm lg:max-w-2xl ">
         <h1 className="text-3xl font-bold mb-6 text-center text-[#FFF8E4]">{form.title}</h1>
         <p className="text-center text-[#FFF8E4] mb-4">{questionLabel}</p>
